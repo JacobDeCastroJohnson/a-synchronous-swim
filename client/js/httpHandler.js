@@ -13,56 +13,63 @@
 
 
 
-
   const ajaxGetCommand = (callback = ()=>{}) => {
     // var formData = new FormData();
     // formData.append('file', file);
     $.ajax({
-      data: 'REQEST HERE <-------------------------',
+      data: 'SINK',
       type: 'GET',
       url: serverUrl,
       success: (data) => {
-        console.log('success: GET');
-        console.log(data)
+        if (data !== 'Queue Empty') {
+          console.log('success: GET');
+          callback(data);
+        }
       }
     });
   };
 
-  // setInterval(ajaxGetCommand, 10000);
-ajaxGetCommand();
+  setInterval(function() {
+    ajaxGetCommand(SwimTeam.move)
+  }, 5000);
 
-  // const ajaxFileUplaod = (file) => {
-  //   var formData = new FormData();
-  //   formData.append('file', file);
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: 'FILL_ME_IN',
-  //     cache: false,
-  //     contentType: false,
-  //     processData: false,
-  //     success: () => {
-  //       // reload the page
-  //       window.location = window.location.href;
-  //     }
-  //   });
-  // };
 
-  // $('form').on('submit', function(e) {
-  //   e.preventDefault();
 
-  //   var form = $('form .file')[0];
-  //   if (form.files.length === 0) {
-  //     console.log('No file selected!');
-  //     return;
-  //   }
 
-  //   var file = form.files[0];
-  //   if (file.type !== 'image/jpeg') {
-  //     console.log('Not a jpg file!');
-  //     return;
-  //   }
+  const ajaxFileUplaod = (file) => {
+    var formData = new FormData();
+    formData.append('file', file);
+    console.log(formData.get('file'))
+    $.ajax({
+      type: 'POST',
+      data: formData,
+      url: serverUrl,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: () => {
+        // reload the page
+        window.location = window.location.href;
+      }
+    });
+  };
 
-  //   ajaxFileUplaod(file);
-  // });
+  $('form').on('submit', function(e) {
+    e.preventDefault();
+
+    var form = $('form .file')[0];
+    if (form.files.length === 0) {
+      console.log('No file selected!');
+      return;
+    }
+
+    var file = form.files[0];
+    if (file.type !== 'image/jpeg') {
+      console.log('Not a jpg file!');
+      return;
+    }
+
+    ajaxFileUplaod(file);
+  });
 
 })();
