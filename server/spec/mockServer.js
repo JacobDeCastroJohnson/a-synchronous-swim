@@ -61,3 +61,8 @@ module.exports = {
     };
   }
 };
+
+
+// let {req, res} = server.mock('/', 'GET');
+//req =  new request(url, method, postdata),
+//res = new response
